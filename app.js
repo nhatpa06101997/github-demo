@@ -37,6 +37,7 @@ Category.find(function(err,cate) {
 });
 
 //vui ve ko quao
+//thich vui ko
 app.use(session({
     secret: 'keyboard cat',
     resave: true,
