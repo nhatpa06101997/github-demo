@@ -39,6 +39,7 @@ Category.find(function(err,cate) {
 //vui ve ko quao
 //vui chu
 //thich vui ko
+//het vui
 app.use(session({
     secret: 'keyboard cat',
     resave: true,
