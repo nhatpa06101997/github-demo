@@ -36,7 +36,7 @@ Category.find(function(err,cate) {
     app.locals.categories = cate;
 });
 
-
+//vui ve ko quao
 app.use(session({
     secret: 'keyboard cat',
     resave: true,
