@@ -34,7 +34,7 @@ const Category = require('./model/category');
 Category.find(function(err,cate) {
     if(err) console.log(err);
     app.locals.categories = cate;
-});
+})
 
 
 app.use(session({
