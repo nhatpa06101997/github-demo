@@ -1,0 +1,132 @@
+<%- include('../layouts/admin_header') -%>
+
+<h3 class="page-title">Edit Product</h3>
+<a href="/admin/products" class="btn btn-primary">Back to all Products</a>
+
+<form action="/admin/products/edit/<%= id %>" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    <div class="form-group">
+        <label for="" class="control-label col-xs-2">Title</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" name="title" placeholder="Title" value="<%= title %>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label col-xs-2">Price</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" name="price" placeholder="Price" value="<%= price %>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label col-xs-2">Description</label>
+        <div class="col-xs-10">
+            <textarea name="desc" placeholder="Description" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label col-xs-2">Category</label>
+        <div class="col-xs-10">
+            <select name="category" class="form-control">
+                <% categories.forEach(cate => { %>
+                    <option value="<%= cate.slug %>"
+                        <% if(cate.slug == category) { %>
+                            selected = "selected"
+                        <% } %>
+                    ><%= cate.title %></option>
+                <% }); %>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label col-xs-2">Image</label>
+        <p>
+            <% if(image == "") { %>
+                <img height="100" width="100" src="/public/images/mazzola.jpg" alt="">
+            <% } else { %>
+                <img height="100" width="100" src="/public/product_images/<%= id %>/<%= image %>" alt="">
+            <% } %>
+        </p>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label col-xs-2">Upload Image</label>
+        <div class="col-xs-10">
+            <input type="file" class="form-control" name="image" id="img">
+            <img src="#" id="imgPreview" alt="">
+        </div>
+    </div>
+
+    <input type="hidden" name="pimage" value="<%= image %>">
+
+    <div class="form-group">
+        <div class="col-sm-offet-2 col-xs-10">
+            <button type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
+<hr>
+<h3 class="page-header">Gallery</h3>
+
+<ul class="gallery">
+    <% galleryImages.forEach(image => { %>
+        <% if(image != "thumbs") { %>
+            <li>
+                <img src="/public/product_images/<%= id %>/gallery/thumbs/<%= image %>" alt="">&nbsp;
+                <a href="/admin/products/delete-img/<%= image %>?id=<%= id %>" class="confirmDeletion">Delete</a>
+            </li>
+        <% } %>
+    <% }); %>
+</ul>
+
+<br><br>
+<form action="/admin/products/product-gallery/<%= id %>" method="POST" enctype="multipart/form-data" id="dropzoneForm" class="dropzone">
+    <div class="fallback">
+        <!-- bắt buộc name="file" -->
+        <input type="file" name="file" multiple>
+        <input type="submit" value="Upload">
+    </div>
+</form>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/basic.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.js"></script>
+
+
+
+<script>
+    function readUrl(input){
+        if(input.files && input.files[0]){
+            var reader = new FileReader();
+            
+            //src của id = imgPreview sẽ là nơi dc truyền tham số vào khi đọc file input
+            reader.onload = function(e){
+                $('#imgPreview').attr('src', e.target.result).width(100).height(100);
+            }
+            //đọc file input dưới dạng URL
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    //id = img sẽ chuyển file dc truyền vào đến hàm readUrl để xử lý file
+    $('#img').change(function(){
+        readUrl(this);
+    });
+</script>
+<script>
+    Dropzone.options.dropzoneForm = {
+        acceptedFiles = "image/*",
+        init: ()=>{
+            this.on('queuecomplete',file =>{
+                setTimeout(() =>{
+                    location.reload()
+                },1000);
+            })
+        }
+    }
+</script>
+
+<%- include('../layouts/admin_footer') -%>

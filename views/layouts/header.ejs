@@ -1,0 +1,92 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title><%= title %></title>
+
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script defer src="/public/js/script.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="/">Shopping Cart</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <% pages.forEach(page =>{ %>
+              <% if(page.slug == "home") { %>
+                <li></li>
+              <% } else { %>
+                <li><a href="/<%= page.slug %>" class="nav-link"><%= page.title %></a></li>
+              <% } %>
+            <% }); %>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="/cart/checkout" class="nav-link">My Cart(
+                <% if(typeof cart !== "undefined") { %>
+                  <%= cart.length %>
+                <% } else { %>
+                  0
+                <% } %>
+              )</a>
+            </li>
+
+            <% if(user) { %>
+              <li><a href="/users/logout" class="nav-link">Hi, <%= user.username %>(Log out)</a></li>
+            <% } else { %>
+              <li><a href="/users/register" class="nav-link">Register</a></li>
+              <li><a href="/users/login" class="nav-link">Login</a></li>
+            <% } %>
+            <% if(user && user.admin == 1) { %>
+              <li><a href="/admin/pages" class="nav-link">Admin</a></li>
+            <% } %>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <br><br><br>
+<div class="container">
+    <%- messages('messages', locals) %>
+
+    <% if(errors) {%>
+      <% errors.forEach(function(error) { %>
+        <div class="alert-danger">
+          <%= error.msg %>
+        </div>
+      <% }); %>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-3">
+        <h3>Category</h3>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="/products/all">All Products</a>
+          </li>
+          <% categories.forEach(cate => { %>
+            <li class="list-group-item">
+              <a href="/products/<%= cate.slug %>"><%= cate.title %></a>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    <div class="col-xs-12 col-md-1"></div>
+    <div class="col-xs-12 col-md-8">
+
+    
