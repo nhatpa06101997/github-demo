@@ -14,7 +14,7 @@ const io =require('socket.io')(server);
 const port = process.env.PORT || 3000;
 
 mongoose.connect('mongodb+srv://nhatpa0610:nhatpa06101997@cluster0-lfiza.mongodb.net/test7?retryWrites=true&w=majority',
-{useNewUrlParser: true, useUnifiedTopology: true});
+{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 
 app.set('view engine','ejs');
 app.use('/public',express.static('public'));
