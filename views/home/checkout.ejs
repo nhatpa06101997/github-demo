@@ -16,7 +16,13 @@
             <% var sub = parseFloat(cart.price * cart.qty).toFixed(2) %>
             <% total += +sub %>
             <tr>
-                <td><img height="100" width="100" src="/public/<%= cart.image %>" alt=""></td>
+                <td>
+                    <% if(cart.image == "") { %>
+                        <img height="100" width="100" src="/public/images/mazzola.jpg" alt="">
+                    <% } else { %>
+                        <img height="100" width="100" src="/public/<%= cart.image %>" alt="">
+                    <% } %>
+                </td>
                 <td><%= cart.title %></td>
                 <td>$<%= parseFloat(cart.price).toFixed(2) %></td>
                 <td><%= cart.qty %></td>

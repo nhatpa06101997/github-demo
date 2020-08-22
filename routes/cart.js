@@ -5,32 +5,37 @@ const Product = require('../model/product');
 
 router.get('/add/:slug',async(req,res,next) =>{
     try {
-        const slug = req.params.slug;
-        const p = await Product.findOne({slug: slug});
+        const slug  = req.params.slug;
+        const data = await Product.findOne({slug:req.params.slug});
+        var path;
+        if(data.image == ""){
+            path = ""
+        }else{
+            path = '/product_images/' + data._id + '/' + data.image;
+        }
         if(typeof req.session.cart == "undefined"){
             req.session.cart = [];
             req.session.cart.push({
                 title: slug,
-                price: parseFloat(p.price).toFixed(2),
+                price: parseFloat(data.price).toFixed(2),
                 qty: 1,
-                image: '/product_images/' + p._id + '/' + p.image
+                image: path
             });
         }else{
             var bool = true;
             var cart = req.session.cart;
-
-            for(var i = 0 ; i < cart.length; i++){
+            for(var i =0 ;i<cart.length; i++){
                 if(cart[i].title == slug){
                     cart[i].qty++;
-                    bool = false;
+                    bool=false;
                     break;
                 }
             }if(bool){
                 cart.push({
                     title: slug,
-                    price: parseFloat(p.price).toFixed(2),
+                    price: parseFloat(data.price).toFixed(2),
                     qty: 1,
-                    image: '/product_images/' + p._id +'/' +p.image
+                    image: '/product_images/' + data._id + '/' + data.image
                 });
             }
         }
