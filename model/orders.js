@@ -15,6 +15,6 @@ const orderSche = schema({
         }
     }],
     time: {type:String}
-});
+})
 
 module.exports = mongoose.model('Order',orderSche);
