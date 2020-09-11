@@ -101,7 +101,7 @@ router.get('/update/:slug',async(req,res,next) =>{
 router.get('/buynow',async(req,res,next) =>{
     try {
         const userId = req.user._id;
-        const cart = req.session.cart;
+        const cart = req.session.cart
         
         const user = await User.findById(userId);
         if(!user){  
