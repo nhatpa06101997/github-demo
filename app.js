@@ -36,9 +36,6 @@ Category.find(function(err,cate) {
     app.locals.categories = cate;
 });
 
-//vui ve ko quao
-//vui chu
-//thich vui ko
 app.use(session({
     secret: 'keyboard cat',
     resave: true,
