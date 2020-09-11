@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const Product = require('../model/product');
+const Order = require('../model/orders');
+const User = require('../model/user');
 
 router.get('/add/:slug',async(req,res,next) =>{
     try {
@@ -95,6 +97,48 @@ router.get('/update/:slug',async(req,res,next) =>{
         console.log(error);
     }
 });
+
+router.get('/buynow',async(req,res,next) =>{
+    try {
+        const userId = req.user._id;
+        const cart = req.session.cart;
+        
+        const user = await User.findById(userId);
+        if(!user){  
+            req.flash('danger',"User not found!!");
+            res.redirect('/')
+        }else{
+            const order = new Order({
+                userId: userId,
+                time: new Date()
+            });
+            for(var i=0 ; i<cart.length; i++){
+                const p = await Product.findOne({title: cart[i].title});
+                if(!p){
+                    req.flash('danger',"Product not found!!");
+                    res.redirect('/')
+                }else{
+                    order.orders.push({
+                        productId: p._id,
+                        carts: {
+                            title: cart[i].title,
+                            price: cart[i].price,
+                            qty: cart[i].qty,
+                            image: cart[i].image
+                        }
+                    })
+                }
+            }
+
+            await order.save();
+            req.flash('success',"Success!!");
+            res.redirect('/')
+            
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 router.get('/clear', async(req,res,next) =>{
     try {
