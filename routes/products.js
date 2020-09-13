@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 
 const Product = require('../model/product');
 const Category = require('../model/category');
+const { reset } = require('nodemon');
 
 router.get('/all',async(req,res,next)=>{
     try {
@@ -62,6 +63,8 @@ router.get('/:category/:slug', async(req,res,next) =>{
     } catch (error) {
         console.log(error);
     }
-})
+});
+
+
 
 module.exports = router;

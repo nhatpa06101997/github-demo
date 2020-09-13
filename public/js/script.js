@@ -30,4 +30,4 @@ function appendMessage(message){
     messageElement.innerText = message;
     messageContainer.append(messageP);
     messageP.append(messageElement);
-}
+};

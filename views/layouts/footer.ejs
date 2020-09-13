@@ -1,6 +1,32 @@
 </div>
 </div>
 </div>
+<script>
+    $( function() {
+      $('#searchName').autocomplete({
+          source: function(req,res){
+              $.ajax({
+                  url: "autocomplete/search",
+                  dataType: "jsonp",
+                  type: "GET",
+                  data: req,
+                  success: function(data){
+                    res(data)
+                  },
+                  error: function(e){
+                      console.log(e.status)
+                  }
+              });
+          },
+          minLength:1,
+          select:function(event, ui){
+              if(ui.item){
+                  $('#searchName').val(ui.item.label);
+              }
+          }
+      })
+    });
+    </script>
 <hr>
 <p class="text-center">&COPY; Shopping Cart</p>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
